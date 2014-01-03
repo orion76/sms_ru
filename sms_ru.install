@@ -1,0 +1,14 @@
+<?php
+/**
+ *  implement hook_install()
+ */
+function sms_ru_install() {
+  variable_set('sms_ru_admin_form', array('service'=>array('url'=>"http://sms.ru/sms/send")));
+}
+
+/**
+ *  implement hook_uninstall()
+ */
+function sms_ru_uninstall() {
+  variable_del('sms_ru_admin_form');
+}

@@ -1,0 +1,350 @@
+<?php
+
+define('SMS_RU_ACCESS_ADMINISTER', 'administer sms ru');
+define('SMS_RU_ACCESS_SEND_SMS', 'send sms ru');
+
+/**
+ * Implements hook_menu().
+ */
+function sms_ru_menu() {
+  $items = array();
+  $items['admin/config/sms-ru'] = array(
+      'title' => 'SMS.RU',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('sms_ru_admin_form'),
+      'access arguments' => array('administer sms ru'),
+      'type' => MENU_LOCAL_TASK,
+  );
+  return $items;
+}
+
+/**
+ *  
+ *
+ * @param 
+ *  
+ * @return 
+ *  
+ */
+function sms_ru_admin_form($form, &$form_state) {
+
+  if (isset($form_state['values'])) {
+    $values = $form_state['values'];
+  } else {
+    $values = sms_ru_settings_get();
+  }
+
+  $form['service'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Service sms.ru settings'),
+      '#tree' => TRUE,
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE
+  );
+  $form['service']['url'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Query URL'),
+      '#description' => t(''),
+      '#default_value' => $values['service']['url'],
+      '#size' => 60,
+      '#maxlength' => 128,
+  );
+
+  $form['account'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Account sms.ru'),
+      '#tree' => TRUE,
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE
+  );
+  $form['account']['api_id'] = array(
+      '#type' => 'textfield',
+      '#title' => t('API ID'),
+      '#description' => t(''),
+      '#default_value' => $values['account']['api_id'],
+      '#size' => 60,
+      '#maxlength' => 128,
+  );
+  $form['account']['admin_phone'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Admin phone number'),
+      '#description' => t(''),
+      '#default_value' => $values['account']['admin_phone'],
+      '#size' => 60,
+      '#maxlength' => 128,
+  );
+  $form['send_test'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Test send sms'),
+      '#tree' => TRUE,
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE
+  );
+  $form['send_test']['text'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Text sms'),
+      '#description' => t(''),
+      '#default_value' => $values['send_test']['text'],
+      '#rows' => 2,
+  );
+  $form['send_test']['message'] = array(
+      '#type' => 'markup',
+      '#prefix' => '<div id="send-test-message" class="message">',
+      '#suffix' => '</div>',
+      '#title' => t('Text sms'),
+      '#value' => $values['send_test']['text'],
+  );
+  $form['send_test']['send'] = array(
+      '#type' => 'submit',
+      '#value' => t('Send'),
+      '#ajax' => array(
+          'callback' => 'sms_ru_admin_form_send_sms_ajax_callback',
+          'wrapper' => 'send-test-message',
+          'method'=>'replace'
+      )
+  );
+
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save')
+  );
+  return $form;
+}
+
+/**
+ *  
+ *
+ * @param 
+ *  
+ * @return 
+ *  
+ */
+function sms_ru_admin_form_send_sms_ajax_callback($form, &$form_state) {
+  if (isset($form_state['clicked_button']['#parents'][1]) && $form_state['clicked_button']['#parents'][1] == 'send') {
+    $text = $values['send_test']['text'];
+    $phone = $values['account']['admin_phone'];
+    $result = sms_ru_sms_send($text, $phone);
+    drupal_set_message($result['message']);
+  }
+}
+
+function sms_ru_admin_form_submit($form, &$form_state) {
+  $values = &$form_state['values'];
+  variable_set('sms_ru_admin_form', $values);
+
+
+}
+
+/**
+ *  
+ *
+ * @param 
+ *  
+ * @return 
+ *  
+ */
+function sms_ru_access_check($access_permission) {
+  switch ($access_permission) {
+    case SMS_RU_ACCESS_ADMINISTER:
+      if (user_access(SMS_RU_ACCESS_ADMINISTER)) {
+        return TRUE;
+      } else {
+        drupal_set_message(t('You have no rights to a administer sms send settings'), 'error');
+        return FALSE;
+      }
+      break;
+    case SMS_RU_ACCESS_SEND_SMS:
+      if (user_access(SMS_RU_ACCESS_SEND_SMS)) {
+        return TRUE;
+      } else {
+        drupal_set_message(t('You have no rights to a Send sms from site'), 'error');
+        return FALSE;
+      }
+      break;
+  }
+}
+
+/**
+ *  
+ *
+ * @param 
+ *  
+ * @return 
+ *  
+ */
+function sms_ru_settings_get() {
+  $info = variable_get('sms_ru_admin_form', FALSE);
+  if (!$info) {
+    drupal_set_message('SMS RU settings - missing!</br> See : @link', array('@link' => sms_ru_link('settings')));
+  }
+
+  return $info;
+}
+
+/**
+ *  
+ *
+ * @param 
+ *  
+ * @return 
+ *  
+ */
+function sms_ru_link($op = 'settings') {
+
+  switch ($op) {
+    case 'settings':
+      $link = l(t('Sms RU settings'), 'admin/config/sms-ru');
+      break;
+    default:
+      $link = FALSE;
+  }
+  return $link;
+}
+
+/**
+ *  
+ *
+ * @param 
+ *  
+ * @return 
+ *  
+ */
+function sms_ru_sms_send($text, $phone_numbers) {
+
+  if (!sms_ru_access_check(SMS_RU_ACCESS_SEND_SMS)) {
+    return FALSE;
+  }
+
+  $info = sms_ru_settings_get();
+
+  if (!$info) {
+    return FALSE;
+  }
+  if (!is_array($phone_numbers)) {
+    $phone_numbers = array($phone_numbers);
+  }
+
+  $ch = curl_init($info['service']['url']);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+      "api_id" => $info['account']['api_id'],
+      "to" => implode(',', $phone_numbers),
+      "text" => $text
+  ));
+  $result = curl_exec($ch);
+
+  curl_close($ch);
+  $code = substr($result, 0, 3);
+  //$message= sms_ru_service_messages($code);
+  $message= sms_ru_service_messages(200);
+  return array('message' =>$message, 'data' => $result);
+}
+
+/**
+ *  
+ *
+ * @param 
+ *  
+ * @return 
+ *  
+ */
+function sms_ru_service_messages($code) {
+  $messages = &drupal_static(__FUNCTION__);
+  if ($messages == NULL) {
+    $messages = array(
+// 100	Сообщение принято к отправке. На следующих строчках вы найдете идентификаторы отправленных сообщений в том же порядке, в котором вы указали номера, на которых совершалась отправка.
+        '100' => t('(Code: 100) message is accepted for delivery. In the following lines you will find the identifiers of messages sent in the same order in which you entered the room , which was accomplished shipping.'),
+// 200	Неправильный api_id
+        '200' => t('(Code: 200) Wrong api_id'),
+//201	Не хватает средств на лицевом счету
+        '201' => t('(Code: 201) Not enough money to personal account'),
+//202	Неправильно указан получатель
+        '202' => t('(Code: 202) Incorrect recipient'),
+//203	Нет текста сообщения
+        '203' => t('(Code: 203) No text messages'),
+//204	Имя отправителя не согласовано с администрацией      
+        '204' => t('(Code: 204) Name of the sender is not in accord with the administration'),
+//205	Сообщение слишком длинное (превышает 8 СМС)      
+        '205' => t('(Code: 205) Message too long (more than 8 SMS)'),
+//206	Будет превышен или уже превышен дневной лимит на отправку сообщений      
+        '206' => t('(Code: 206) Is exceeded or already exceeded the daily limit for sending messages'),
+//207	На этот номер (или один из номеров) нельзя отправлять сообщения, либо указано более 100 номеров в списке получателей      
+        '207' => t('(Code: 207) This number (or one of the rooms) can not send messages , or specified more than 100 rooms in the recipient list'),
+//208	Параметр time указан неправильно      
+        '208' => t('(Code: 208) The time parameter is incorrect'),
+//209	Вы добавили этот номер (или один из номеров) в стоп-лист      
+        '209' => t('(Code: 209) You have added the number (or one of the rooms) to the stop list'),
+//210	Используется GET, где необходимо использовать POST      
+        '210' => t('(Code: 210) Use GET, where you must use POST'),
+//211	Метод не найден      
+        '211' => t('(Code: 211) Method not found'),
+//212	Текст сообщения необходимо передать в кодировке UTF-8 (вы передали в другой кодировке)      
+        '212' => t('(Code: 212) Message to be transmitted in UTF- 8 (you passed to the other encoding)'),
+//220	Сервис временно недоступен, попробуйте чуть позже.      
+        '220' => t('(Code: 220) Service temporarily unavailable , please try later.'),
+//230	Сообщение не принято к отправке, так как на один номер в день нельзя отправлять более 250 сообщений.      
+        '230' => t('(Code: 230) Message is not accepted for delivery, as there is one room on the day you can not send more than 250 messages.'),
+//300	Неправильный token (возможно истек срок действия, либо ваш IP изменился)      
+        '300' => t('(Code: 300) Invalid token (possibly expired or your IP has changed)'),
+//301	Неправильный пароль, либо пользователь не найден      
+        '301' => t('(Code: 301) Wrong password or user not found'),
+//302	Пользователь авторизован, но аккаунт не подтвержден (пользователь не ввел код, присланный в регистрационной смс)      
+        '302' => t('(Code: 302) Is authorized user , but the account is not confirmed (the user enters a code sent in the registration sms)'),
+    );
+  }
+  return isset($messages[$code]) ? $messages[$code] : FALSE;
+}
+
+/**
+ * Implements hook_rules_action_info().
+ */
+function sms_ru_rules_action_info() {
+
+  return array(
+      'sms_ru_rules_action_sms_send' => array(
+          'label' => t('Send sms over sms.ru'),
+          'group' => t('SMS'),
+          'parameter' => array(
+              'sms_text' => array(
+                  'type' => 'text',
+                  'label' => t('SMS text'),
+                  'description' => t("The sms message body."),
+              ),
+              'phone_number' => array(
+                  'type' => 'text',
+                  'label' => t('Phone number'),
+                  'description' => t('The destination SMS number'),
+              ),
+          ),
+         // 'access callback' => 'sms_rules_access_callback',
+      ),
+  );
+}
+
+
+/**
+ *  
+ *
+ * @param 
+ *  
+ * @return 
+ *  
+ */
+function sms_ru_rules_action_sms_send($sms_text,$phone_number){
+    sms_ru_sms_send($sms_text, $phone_number);
+}
+
+function sms_ru_permission() {
+  return array(
+      'administer sms ru' => array(
+          'title' => t('Administer sms.ru module'),
+          'description' => t('Administer sms.ru module.'),
+      ),
+      'send sms ru' => array(
+          'title' => t('Send sms over sms.ru'),
+          'description' => t('Send sms over sms.ru'),
+      ),
+  );
+}

@@ -1,0 +1,110 @@
+#: "sms_ru.module:46"
+msgid ""Service sms.ru settings""
+msgstr ""Настройки сервиса sms.ru""
+
+#: "sms_ru.module:53"
+msgid ""Query URL""
+msgstr ""URL запроса""
+
+#: "sms_ru.module:62"
+msgid ""Account sms.ru""
+msgstr ""Ваш аккаунт на sms.ru""
+
+#: "sms_ru.module:69"
+msgid ""API ID""
+msgstr """"
+
+#: "sms_ru.module:77"
+msgid ""Admin phone number""
+msgstr ""Номер телефона администратора""
+
+#: "sms_ru.module:85"
+msgid ""Test send sms""
+msgstr ""Тест отправки смс""
+
+#: "sms_ru.module:92;101"
+msgid ""Text sms""
+msgstr ""Текст смс""
+
+#: "sms_ru.module:106"
+msgid ""Send""
+msgstr ""Отправить""
+
+#: "sms_ru.module:116"
+msgid ""Save""
+msgstr ""Сохранить""
+
+#: "sms_ru.module:158"
+msgid ""You have no rights to a administer sms send settings""
+msgstr ""У вас недостаточно прав, для настройки параметров отправки смс""
+
+#: "sms_ru.module:166"
+msgid ""You have no rights to a Send sms from site""
+msgstr ""У вас недостаточно прав для отправки смс с сайта""
+
+#: "sms_ru.module:202"
+msgid ""Sms RU settings""
+msgstr ""Настройки sms.ru""
+
+
+
+msgid "(Code: 100) message is accepted for delivery. In the following lines you will find the identifiers of messages sent in the same order in which you entered the room , which was accomplished shipping."
+msgstr "(Код: 100) Сообщение принято к отправке. На следующих строчках вы найдете идентификаторы отправленных сообщений в том же порядке, в котором вы указали номера, на которых совершалась отправка."
+
+msgid "(Code: 200) Wrong api_id"
+msgstr "(Код: 200) Неправильный api_id"
+
+msgid "(Code: 201) Not enough money to personal account"
+msgstr "(Код: 201) Не хватает средств на лицевом счету"
+
+msgid "(Code: 202) Incorrect recipient"
+msgstr "(Код: 202) Неправильно указан получатель"
+
+msgid "(Code: 203) No text messages"
+msgstr "(Код: 203) Нет текста сообщения"
+
+msgid "(Code: 204) Name of the sender is not in accord with the administration"
+msgstr "(Код: 204) Имя отправителя не согласовано с администрацией"
+
+msgid "(Code: 205) Message too long (more than 8 SMS)"
+msgstr "(Код: 205) Сообщение слишком длинное (превышает 8 СМС)"
+
+msgid "(Code: 206) Is exceeded or already exceeded the daily limit for sending messages"
+msgstr "(Код: 206) Будет превышен или уже превышен дневной лимит на отправку сообщений"
+
+msgid "(Code: 207) This number (or one of the rooms) can not send messages , or specified more than 100 rooms in the recipient list"
+msgstr "(Код: 207) На этот номер (или один из номеров) нельзя отправлять сообщения, либо указано более 100 номеров в списке получателей"
+
+msgid "(Code: 208) The time parameter is incorrect"
+msgstr "(Код: 208) Параметр time указан неправильно"
+
+msgid "(Code: 209) You have added the number (or one of the rooms) to the stop list"
+msgstr "(Код: 209) Вы добавили этот номер (или один из номеров) в стоп-лист"
+
+msgid "(Code: 210) Use GET, where you must use POST"
+msgstr "(Код: 210) Используется GET, где необходимо использовать POST"
+
+msgid "(Code: 211) Method not found"
+msgstr "(Код: 211) Метод не найден"
+
+msgid "(Code: 212) Message to be transmitted in UTF- 8 (you passed to the other encoding)"
+msgstr "(Код: 212) Текст сообщения необходимо передать в кодировке UTF-8 (вы передали в другой кодировке)"
+
+msgid "(Code: 220) Service temporarily unavailable , please try later."
+msgstr "(Код: 220) Сервис временно недоступен, попробуйте чуть позже."
+
+msgid "(Code: 230) Message is not accepted for delivery, as there is one room on the day you can not send more than 250 messages."
+msgstr "(Код: 230) Сообщение не принято к отправке, так как на один номер в день нельзя отправлять более 250 сообщений."
+
+msgid "(Code: 300) Invalid token (possibly expired or your IP has changed)"
+msgstr "(Код: 300) Неправильный token (возможно истек срок действия, либо ваш IP изменился)"
+
+msgid "(Code: 301) Wrong password or user not found"
+msgstr "(Код: 301) Неправильный пароль, либо пользователь не найден"
+
+msgid "(Code: 302) Is authorized user , but the account is not confirmed (the user enters a code sent in the registration sms)"
+msgstr "(Код: 302) Пользователь авторизован, но аккаунт не подтвержден (пользователь не ввел код, присланный в регистрационной смс)"
+
+
+
+
