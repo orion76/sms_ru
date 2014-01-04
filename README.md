@@ -36,4 +36,5 @@ sms_ru
 
 
 ==============
+Автор: [orion76](http://www.drupal.ru/username/orion76), email: gpb@yandex.ru  
 Лицензия: [GPL v3](http://choosealicense.com/licenses/gpl-v3/)
