@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Sms ru : " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Sms ru</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/orion76/sms_ru">View on GitHub</a>
+
+          <h1 id="project_title">Sms ru</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/orion76/sms_ru/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/orion76/sms_ru/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="sms_ru" class="anchor" href="#sms_ru"><span class="octicon octicon-link"></span></a>sms_ru</h1>
+
+<p>Модуль отправки СМС при помощи сервиса sms.ru (для CMS Drupal 7)  </p>
+
+<h3>
+<a name="%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5" class="anchor" href="#%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5"><span class="octicon octicon-link"></span></a>Описание:</h3>
+
+<p>Позволяет отправлять смс с сайта через сервис рассылок смс - <a href="http:%5Csms.ru">sms.ru</a></p>
+
+<p>Реализованные на данный момент функции:<br>
+1.Ввод данных в административной части сайта, необходимых для отправки смс(API ID)<br>
+2.Действие(action) для модуля Rules  </p>
+
+<h2>
+<a name="%D0%9D%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-%D0%BC%D0%BE%D0%B4%D1%83%D0%BB%D1%8F" class="anchor" href="#%D0%9D%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-%D0%BC%D0%BE%D0%B4%D1%83%D0%BB%D1%8F"><span class="octicon octicon-link"></span></a>Настройка модуля</h2>
+
+<hr><p>1.Регистрируемся на <a href="http://sms.ru/?panel=main&amp;subpanel=programmer">sms.ru</a>.<br>
+2.Для отправки смс на один "свой" номер(указанный при регистрации) до 60 смс в день бесплатно.<br>
+3.При регистрации выдается ключ для доступа к сервису(API ID).<br>
+4.Устанавливаем модуль стандартно(копируем в нужную папку и активируем в разделе админки Модули).<br>
+5.В разделе админки Конфигурация должна появиться ссылка на страницу настройки модуля SMS.RU.<br>
+6.Поле "URL запроса" оставляем без изменений&lt;(<a href="http://sms.ru/sms/send)%3E">http://sms.ru/sms/send)&gt;</a>.<br>
+7.В поле "API ID" вводим идентификатор, полученый при регистрации на сервисе sms.ru<br>
+8.В поле "Номер телефона администратора" вводим телефон, указанный при регистрации.
+На данный момент, это поле, используется только для теста отправки.</p>
+
+<h2>
+<a name="%D0%9D%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-%D1%80%D0%B0%D1%81%D1%81%D1%8B%D0%BB%D0%BA%D0%B8" class="anchor" href="#%D0%9D%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-%D1%80%D0%B0%D1%81%D1%81%D1%8B%D0%BB%D0%BA%D0%B8"><span class="octicon octicon-link"></span></a>Настройка рассылки</h2>
+
+<hr><p>1.Добавляем правило Rules<br>
+2.Событие например: пользователь авторизировался.<br>
+3.Условие: Пользователь - blondinko111<br>
+4.Действие: Send sms over sms.ru<br>
+5.В поле SMS TEXT вводим "Блондинка на сайте".<br>
+6.В поле PHONE NUMBER вводим свой телефон(без пробелов, первая-7: 792712312323)<br>
+7.Как только пользователь blondinko111 зайдет на сайт, на ваш телефон придет смс.  </p>
+
+<p>ЗЫ.Ситуация в примере шуточная и только для примера-)  </p>
+
+<h1></h1>
+
+<p>Автор: <a href="http://www.drupal.ru/username/orion76">orion76</a>, email: <a href="mailto:gpb@yandex.ru">gpb@yandex.ru</a><br>
+Лицензия: <a href="http://choosealicense.com/licenses/gpl-v3/">GPL v3</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Sms ru maintained by <a href="https://github.com/orion76">orion76</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
