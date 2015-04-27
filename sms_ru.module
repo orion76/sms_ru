@@ -37,7 +37,6 @@ function sms_ru_admin_form($form, &$form_state) {
   $values+=array(
     'account' => array(),
     'send_test' => array(),
-    'debug_mode' => FALSE,
   );
 
   $values['service']+=array('url' => 'http://sms.ru/sms/send');
