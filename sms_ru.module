@@ -117,7 +117,7 @@ function sms_ru_admin_form($form, &$form_state) {
   $form['debug_mode'] = array(
     '#type' => 'checkbox',
     '#title' => t('Debug mode'),
-    '#value' => $values['debug_mode'],
+    '#default_value' => $values['debug_mode'],
     '#description' => t('Enable logging service answers'),
   );
 
@@ -152,7 +152,8 @@ function sms_ru_admin_form_send_sms_ajax_callback($form, &$form_state) {
 }
 
 function sms_ru_admin_form_submit($form, &$form_state) {
-  $values = &$form_state['values'];
+  $fields = array('service', 'account', 'debug_mode');
+  $values = array_intersect_key($form_state['values'], array_combine($fields, $fields));
   variable_set('sms_ru_admin_form', $values);
 }
 
